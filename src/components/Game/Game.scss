@@ -1,0 +1,38 @@
+.game {
+  display: flex;
+  justify-content: center;
+  padding-top: 100px;
+
+  &__counters {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+  }
+
+  &__container {
+    position: relative;
+    max-width: max-content;
+  }
+
+  &__field {
+    display: grid;
+    border-radius: 8px;
+    grid-template-columns: repeat(20, 20px);
+    width: max-content;
+    background: rgb(30, 47, 27);
+  }
+
+  &__banner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+
+  &__buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
+}

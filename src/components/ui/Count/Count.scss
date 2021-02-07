@@ -1,0 +1,12 @@
+.count {
+  color: rgb(30, 47, 27);
+  display: flex;
+  font-size: 18px;
+  gap: 5px;
+  &__title {
+    font-weight: 500;
+  }
+  &__result {
+    font-weight: 600;
+  }
+}

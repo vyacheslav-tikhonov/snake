@@ -65,6 +65,10 @@ class Snake {
     } 
   }
 
+  public getLengh() {
+    return this.body.length;
+  }
+
   private moveNodes(field: GameField) {
     const coordinates: [Coordinate, Coordinate][] = [];
     this.body.forEach((snakeNode: SnakeNode) => {
@@ -95,7 +99,6 @@ class Snake {
   private calculateNewCoordinate(direction: Direction, field: GameField) {
     const head = this.body[0];
     const currentCoordinate = {...head.getCurrentCoordinate()};
-    console.log(this.body, currentCoordinate, direction);
 
     return field.getNewCoordinate(currentCoordinate, direction);
   }

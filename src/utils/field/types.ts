@@ -1,4 +1,3 @@
-// type Coordinate = [number, number] // [x, y];
 interface Coordinate { 
   x: number
   y: number
@@ -14,7 +13,7 @@ enum Points {
 
 type Field = Array<Array<Point>>;
 // [1,1,1,1,1], 
-// [1,1,1,-1,1], 
+// [1,1,1,2,1], 
 // [1,0,1,1,1], 
 // [1,1,1,1,1], 
 // [1,1,1,1,1], 
