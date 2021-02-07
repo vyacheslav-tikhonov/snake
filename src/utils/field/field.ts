@@ -22,13 +22,21 @@ class GameField {
   }
 
   public movePoints(coordinates: [Coordinate, Coordinate][]) {
-    coordinates.forEach((coordinate: [Coordinate, Coordinate]) => {
+    for (const coordinate of coordinates) {
       this.movePoint(coordinate[0], coordinate[1]);
-    })
+    }
     if (coordinates[0][0].y === this.foodCoordinate.y &&
       coordinates[0][0].x === this.foodCoordinate.x) {
         this.generateFood();
       }
+  }
+
+  public addPoint(coordinate: Coordinate): void {
+    if (this.field[coordinate.y][coordinate.x] !== 0) {
+      this.field[coordinate.y][coordinate.x] = 0;
+    } else {
+      throw Error('death');
+    }
   }
 
   public movePoint(fromCoordinate: Coordinate, toCoordinate: Coordinate): void {

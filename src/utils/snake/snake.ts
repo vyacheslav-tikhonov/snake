@@ -46,19 +46,20 @@ class Snake {
       let coordinate: Coordinate | undefined = undefined;
       let route: Coordinate[] | undefined = undefined;
 
-      this.addNewCoordinateToNodes(newCoordinate);
-
       if (point === Points['Food']) {
         const lastNode = this.body[this.body.length - 1];
-        coordinate = lastNode.getCurrentCoordinate()
-        route = lastNode.getRoute();
+        coordinate = {...lastNode.getCurrentCoordinate()};
+        route = [...lastNode.getRoute()];
+        route.push({...newCoordinate});
       }
 
+      this.addNewCoordinateToNodes({...newCoordinate});
       this.moveNodes(field);
 
       if (coordinate && route) {
-        this.addTailNode(coordinate, route);
+        this.addTailNode(coordinate, route, field);
       }
+
     } else {
       throw Error('death');
     } 
@@ -67,11 +68,11 @@ class Snake {
   private moveNodes(field: GameField) {
     const coordinates: [Coordinate, Coordinate][] = [];
     this.body.forEach((snakeNode: SnakeNode) => {
-        const nextCoordinate = snakeNode.getNextCoordinate();
-        const currentCoordinate = snakeNode.getCurrentCoordinate();
-        if (nextCoordinate) {
-          coordinates.push([currentCoordinate, nextCoordinate]);
-        }
+      const currentCoordinate = snakeNode.getCurrentCoordinate();
+      const nextCoordinate = snakeNode.getNextCoordinate();
+      if (nextCoordinate) {
+        coordinates.push([currentCoordinate, nextCoordinate]);
+      }
     })
     field.movePoints(coordinates);
   }
@@ -82,14 +83,19 @@ class Snake {
     })
   }
 
-  private addTailNode(coordinate: Coordinate, route?: Coordinate[]) {
+  private addTailNode(coordinate: Coordinate, route?: Coordinate[], field?: GameField) {
     const node = new SnakeNode(coordinate, route);
     this.body.push(node);
+
+    if (field) {
+      field.addPoint(coordinate);
+    }
   } 
 
   private calculateNewCoordinate(direction: Direction, field: GameField) {
     const head = this.body[0];
-    const currentCoordinate = head.getCurrentCoordinate();
+    const currentCoordinate = {...head.getCurrentCoordinate()};
+    console.log(this.body, currentCoordinate, direction);
 
     return field.getNewCoordinate(currentCoordinate, direction);
   }
