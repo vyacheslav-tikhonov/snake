@@ -1,14 +1,14 @@
 import React from 'react';
 import { Snake } from '../../utils/snake/snake';
 import { GameField } from '../../utils/field/field';
-import { FieldSize, Point, Direction, Points, Field } from '../../utils/field/types';
+import { FieldSize, Point, Direction, Points, Field} from '../../utils/field/types';
 import { MapPoint } from '../ui/MapPoint/MapPoint';
 import './Game.scss';
 import { Button } from '../../components/ui/Button/Button';
 import { nanoid } from 'nanoid';
 import { Count } from '../ui/Count/Count';
 import { TextBanner } from '../ui/TextBanner/TextBanner';
-import { KeyboardControls } from '../ui/KeyboardControls/KeyboardControls';
+import { KeyboardControls, ControlState } from '../ui/KeyboardControls/KeyboardControls';
 
 interface State {
   gameField: Field;
@@ -16,6 +16,7 @@ interface State {
   isGameFinished: boolean;
   scope: number;
   speed: number;
+  controlState: ControlState;
 }
 
 const scopeMultiplier = 20;
@@ -61,13 +62,20 @@ export default class Game extends React.Component<{}, State> {
     this.onRestart = this.onRestart.bind(this);
     this.processGame = this.processGame.bind(this);
     this.updateGameSpeedTime = this.updateGameSpeedTime.bind(this);
+    this.highlightingControl = this.highlightingControl.bind(this);
 
     this.state = { 
       gameField: this.field.getField(),
       isGameStarted: false,
       isGameFinished: false,
       scope: 1 * scopeMultiplier,
-      speed: 1
+      speed: 1,
+      controlState: {
+        Top: false,
+        Right: false,
+        Left: false,
+        Down: false,
+      }
     }
   }
 
@@ -146,12 +154,30 @@ export default class Game extends React.Component<{}, State> {
     }
   }
 
+  private highlightingControl(direction: Direction) {
+    let controlState = {...this.state.controlState}
+    controlState[direction] = true;
+
+    this.setState({
+        controlState
+    })
+
+    setTimeout(() => {
+      controlState = {...this.state.controlState}
+      controlState[direction] = false;
+      this.setState({
+          controlState
+      })
+    }, 500);
+  }
+
   private onKeyDown(event: KeyboardEvent): void {
     if (Object.keys(this.controls).indexOf(event.key) !== -1) {
       const key = event.key as 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
       const direction = this.controls[key] as 'Down' | 'Top' | 'Left' | 'Right';
       if (this.checkRotationPosibility(direction)) {
         this.directionsQueue.push(direction);
+        this.highlightingControl(direction);
       }
     }
   }
@@ -212,6 +238,8 @@ export default class Game extends React.Component<{}, State> {
 
   public componentWillUnmount() {
     document.removeEventListener("keypress", this.onKeyDown);
+    this.clearSpeedInterval();
+    this.clearInterval();
   }
 
   private renderStartButton() {
@@ -270,7 +298,7 @@ export default class Game extends React.Component<{}, State> {
                 {banner}
               </div>
               <div className="game__buttons">
-                <KeyboardControls />
+                <KeyboardControls controlState={ this.state.controlState }/>
                 {button}
               </div>
             </div>

@@ -5,4 +5,8 @@
   height: max-content;
   justify-content: center;
   align-content: center;
+
+  &_colored {
+    background: rgb(250, 250, 0);
+  }
 }
