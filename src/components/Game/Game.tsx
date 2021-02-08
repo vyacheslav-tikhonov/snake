@@ -63,6 +63,7 @@ export default class Game extends React.Component<{}, State> {
     this.processGame = this.processGame.bind(this);
     this.updateGameSpeedTime = this.updateGameSpeedTime.bind(this);
     this.highlightingControl = this.highlightingControl.bind(this);
+    this.onClickContol = this.onClickContol.bind(this);
 
     this.state = { 
       gameField: this.field.getField(),
@@ -182,6 +183,13 @@ export default class Game extends React.Component<{}, State> {
     }
   }
 
+  private onClickContol(direction: Direction): void {
+    if (this.checkRotationPosibility(direction)) {
+      this.directionsQueue.push(direction);
+      this.highlightingControl(direction);
+    }
+  }
+
   private checkRotationPosibility(direction: Direction): boolean {
     return this.permiteDirection[this.direction] !== direction;
   }
@@ -298,7 +306,9 @@ export default class Game extends React.Component<{}, State> {
                 {banner}
               </div>
               <div className="game__buttons">
-                <KeyboardControls controlState={ this.state.controlState }/>
+                <KeyboardControls
+                  onClick={this.onClickContol}
+                  controlState={ this.state.controlState }/>
                 {button}
               </div>
             </div>
