@@ -90,9 +90,9 @@ export default class Game extends React.Component<{}, State> {
   private updateSpeedInterval() {
     this.clearSpeedInterval();
     this.speedTimerTime = gameLevelTime;
-    this.setState({
-      speed: this.state.speed + 1
-    })
+    this.setState((state) => ({
+      speed: state.speed + 1
+    }));
     this.gameSpeed += gameSpeedIncrease;
     this.initSpeedInterval();
     this.clearInterval();
@@ -120,9 +120,9 @@ export default class Game extends React.Component<{}, State> {
   }
 
   private updateGameSpeed() {
-    this.setState({
-      speed: this.state.speed + 1,
-    });
+    this.setState((state) => ({
+      speed: state.speed + 1,
+    }));
     this.clearInterval();
     this.initSpeedInterval();
   }
@@ -155,18 +155,18 @@ export default class Game extends React.Component<{}, State> {
   }
 
   private highlightingControl(direction: Direction) {
-    let controlState = {...this.state.controlState}
-    controlState[direction] = true;
 
-    this.setState({
-        controlState
+    this.setState((state) => {
+        const controlState = {...state.controlState};
+        controlState[direction] = true;
+        return {controlState};
     })
 
     setTimeout(() => {
-      controlState = {...this.state.controlState}
-      controlState[direction] = false;
-      this.setState({
-          controlState
+      this.setState((state) => {
+        const controlState = {...state.controlState};
+        controlState[direction] = false;
+        return {controlState};
       })
     }, 500);
   }

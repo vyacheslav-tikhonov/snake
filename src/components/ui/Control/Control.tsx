@@ -2,7 +2,6 @@ import React from 'react';
 import './Control.scss';
 
 interface Prop {
-  icon: JSX.Element;
   className?: string;
 }
 
@@ -17,7 +16,7 @@ export class Control extends React.Component<Prop, State> {
 
   public render() {
     return <div className={`control ${this.props.className}`}>
-            {this.props.icon}
+            {this.props.children}
           </div>
   }
 }
