@@ -8,6 +8,7 @@ import { Button } from '../../components/ui/Button/Button';
 import { nanoid } from 'nanoid';
 import { Count } from '../ui/Count/Count';
 import { TextBanner } from '../ui/TextBanner/TextBanner';
+import { KeyboardControls } from '../ui/KeyboardControls/KeyboardControls';
 
 interface State {
   gameField: Field;
@@ -269,6 +270,7 @@ export default class Game extends React.Component<{}, State> {
                 {banner}
               </div>
               <div className="game__buttons">
+                <KeyboardControls />
                 {button}
               </div>
             </div>
